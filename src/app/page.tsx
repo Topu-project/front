@@ -1,95 +1,136 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import * as React from "react";
+import { styled, alpha } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import Menu, { MenuProps } from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import EditIcon from "@mui/icons-material/Edit";
+import Divider from "@mui/material/Divider";
+import ArchiveIcon from "@mui/icons-material/Archive";
+import FileCopyIcon from "@mui/icons-material/FileCopy";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { Stack } from "@mui/material";
+import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 
 export default function Home() {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+    <div
+      style={{
+        margin: "200px",
+        display: "flex",
+        flexDirection: "row",
+        gap: "20px",
+      }}
+    >
+      <Stack>
+        <Button
+          id="demo-customized-button"
+          aria-controls={open ? "demo-customized-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          variant="contained"
+          disableElevation
+          onClick={handleClick}
+          endIcon={<KeyboardArrowDownIcon />}
+          style={{ maxWidth: "100px" }}
         >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+          Options
+        </Button>
+        <StyledMenu
+          id="demo-customized-menu"
+          MenuListProps={{
+            "aria-labelledby": "demo-customized-button",
+          }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
         >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+          <MenuItem onClick={handleClose} disableRipple>
+            <EditIcon />
+            Edit
+          </MenuItem>
+          <MenuItem onClick={handleClose} disableRipple>
+            <FileCopyIcon />
+            Duplicate
+          </MenuItem>
+          <Divider sx={{ my: 0.5 }} />
+          <MenuItem onClick={handleClose} disableRipple>
+            <ArchiveIcon />
+            Archive
+          </MenuItem>
+          <MenuItem onClick={handleClose} disableRipple>
+            <MoreHorizIcon />
+            More
+          </MenuItem>
+        </StyledMenu>
+      </Stack>
+      <PopupState variant="popover" popupId="demo-popup-menu">
+        {(popupState) => (
+          <React.Fragment>
+            <Button variant="contained" {...bindTrigger(popupState)}>
+              Dashboard
+            </Button>
+            <Menu {...bindMenu(popupState)}>
+              <MenuItem onClick={popupState.close}>Profile</MenuItem>
+              <MenuItem onClick={popupState.close}>My account</MenuItem>
+              <MenuItem onClick={popupState.close}>Logout</MenuItem>
+            </Menu>
+          </React.Fragment>
+        )}
+      </PopupState>
+    </div>
   );
 }
+
+const StyledMenu = styled((props: MenuProps) => (
+  <Menu
+    elevation={0}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "right",
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "right",
+    }}
+    {...props}
+  />
+))(({ theme }) => ({
+  "& .MuiPaper-root": {
+    borderRadius: 6,
+    marginTop: theme.spacing(1),
+    minWidth: 180,
+    color:
+      theme.palette.mode === "light"
+        ? "rgb(55, 65, 81)"
+        : theme.palette.grey[300],
+    boxShadow:
+      "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
+    "& .MuiMenu-list": {
+      padding: "4px 0",
+    },
+    "& .MuiMenuItem-root": {
+      "& .MuiSvgIcon-root": {
+        fontSize: 18,
+        color: theme.palette.text.secondary,
+        marginRight: theme.spacing(1.5),
+      },
+      "&:active": {
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          theme.palette.action.selectedOpacity
+        ),
+      },
+    },
+  },
+}));
