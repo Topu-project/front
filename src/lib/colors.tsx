@@ -8,7 +8,7 @@ import {
   purple500,
 } from "./colorConfig";
 
-const textColors = {
+const topuColors = {
   basic: {
     black: black,
     white: white,
@@ -25,4 +25,4 @@ const textColors = {
   },
 };
 
-export default textColors;
+export default topuColors;
