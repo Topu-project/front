@@ -4,7 +4,7 @@ import topuColors from "@/lib/colors";
 import { Typography, Button, Stack } from "@mui/material";
 import Link from "next/link";
 import React from "react";
-import CommonButton from "./Elements/CommonButton";
+import CommonButton from "./elements/CommonButton";
 
 export default function Header() {
   return (

@@ -10,7 +10,7 @@ export default function Footer() {
           width: "100vw",
           height: "100px",
           backgroundColor: topuColors.grey.middlegGrey,
-          position: "fixed",
+          // position: "fixed",
           bottom: 0,
           display: "flex",
           flexDirection: "row",

@@ -6,6 +6,7 @@ import {
   strongGrey,
   purpleMain,
   purple500,
+  grey600,
 } from "./colorConfig";
 
 const topuColors = {
@@ -17,6 +18,7 @@ const topuColors = {
     strongGrey: strongGrey,
     middlegGrey: middlegGrey,
     lightGrey: lightGrey,
+    grey600: grey600,
   },
 
   pointColor: {
