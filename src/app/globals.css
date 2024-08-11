@@ -1,5 +1,9 @@
 :root {
-  --font-mono: "Noto Sans JP";
+  --font-mono: "Noto Sans JP", monospace;
+}
+
+body {
+  font-family: var(--font-mono);
 }
 
 /* @media (prefers-color-scheme: dark) {

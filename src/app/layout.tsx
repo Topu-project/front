@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import Header from "@/component/Header";
 import Footer from "@/component/Footer";
+import { ThemeProvider } from "@mui/material/styles";
+import { theme } from "@/lib/theme";
+import CssBaseline from "@mui/material/CssBaseline";
+import ThemeRegistry from "./ThemeRegistry";
 
-const inter = Inter({ subsets: ["latin"] });
+const notoSansJP = Noto_Sans_JP({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "TOPU",
@@ -20,25 +28,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="jp" suppressHydrationWarning>
-      <body
-        className={inter.className}
-        style={{ display: "flex", flexDirection: "column" }}
-      >
-        <header
-          style={{
-            textDecoration: "none !important",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingInline: "200px",
-            paddingBlock: "40px",
-          }}
-        >
-          <Header />
-        </header>
-        <div style={{ padding: "200px" }}>{children}</div>
-        <Footer />
+    <html lang="jp" className={notoSansJP.className} suppressHydrationWarning>
+      <body style={{ display: "flex", flexDirection: "column" }}>
+        <ThemeRegistry>
+          <header
+            style={{
+              textDecoration: "none !important",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingInline: "200px",
+              paddingBlock: "40px",
+            }}
+          >
+            <Header />
+          </header>
+          <div style={{ padding: "200px" }}>{children}</div>
+          <Footer />
+        </ThemeRegistry>
       </body>
     </html>
   );
