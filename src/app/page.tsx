@@ -1,10 +1,25 @@
 import * as React from "react";
-import { Button, ButtonGroup, Grid, Pagination, Stack } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  FormControl,
+  Grid,
+  Input,
+  InputAdornment,
+  InputLabel,
+  Pagination,
+  Stack,
+  TextField,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import topuColors from "@/lib/colors";
 import Card from "@/component/templates/Card";
 import MultipleSelectChip from "@/component/elements/MultipleSelectChip";
 import MultipleSelect from "@/component/elements/MultipleSelect";
 import SelectOne from "@/component/elements/SelectOne";
+import CommonButton from "@/component/elements/CommonButton";
+import { white } from "@/lib/colorConfig";
+import { AccountCircle } from "@mui/icons-material";
 
 export default function Home() {
   const optsPosition = [
@@ -55,7 +70,7 @@ export default function Home() {
               variant="text"
               aria-label="Basic button group"
               color="secondary"
-              sx={{ height: "20px", mt: "38px", mb: "46px" }}
+              sx={{ height: "20px", mt: "46px", mb: "38px" }}
             >
               <Button
                 sx={{
@@ -90,16 +105,88 @@ export default function Home() {
             </ButtonGroup>
           </Stack>
           {/** select group part */}
-          <Stack sx={{ flexGrow: 1 }}>
+          <Stack sx={{ flexGrow: 1, mb: "34px" }}>
             <Grid container spacing={2} columns={16}>
-              <Grid item xs={8}>
+              <Grid item xs={3}>
                 <MultipleSelectChip label="記述スタック" />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <MultipleSelect label="ポジション" opts={optsPosition} />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <SelectOne label="進行方式" opts={opts} />
+              </Grid>
+              <Grid item xs={2}>
+                <CommonButton
+                  text={"👀 お気に入りを見る"}
+                  href=""
+                  variant="outlined"
+                  sx={{
+                    backgroundColor: white,
+                    color: topuColors.pointColor.purpleMain,
+                    border: `1px solid ${topuColors.pointColor.purpleMain}`,
+                    fontSize: "14px",
+                    lineHeight: "16px",
+                    width: "100%",
+                    height: "39px",
+                    borderRadius: 40,
+                    ":hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0) !important",
+                      boxShadow: "none !important",
+                      border: `1px solid rgba(155, 39, 176, 0.6) !important`,
+                    },
+                    "&:active": {
+                      backgroundColor: "rgba(0, 0, 0, 0) !important",
+                      boxShadow: "none !important",
+                      border: `1px solid rgba(155, 39, 176, 0.6) !important`,
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <CommonButton
+                  text={"👀 募集中のみ見る"}
+                  href=""
+                  variant="outlined"
+                  sx={{
+                    backgroundColor: white,
+                    color: topuColors.pointColor.purpleMain,
+                    border: `1px solid ${topuColors.pointColor.purpleMain}`,
+                    fontSize: "14px",
+                    lineHeight: "16px",
+                    width: "100%",
+                    height: "39px",
+                    borderRadius: 40,
+                    ":hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0) !important",
+                      boxShadow: "none !important",
+                      border: `1px solid rgba(155, 39, 176, 0.6) !important`,
+                    },
+                    "&:active": {
+                      backgroundColor: "rgba(0, 0, 0, 0) !important",
+                      boxShadow: "none !important",
+                      border: `1px solid rgba(155, 39, 176, 0.6) !important`,
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <FormControl sx={{ width: "100%" }}>
+                  <Input
+                    id="input-with-icon-adornment"
+                    placeholder="検索"
+                    size="small"
+                    sx={{
+                      height: "39px",
+                      backgroundColor: topuColors.grey.lightGrey,
+                    }}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
               </Grid>
             </Grid>
           </Stack>

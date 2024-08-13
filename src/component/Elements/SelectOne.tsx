@@ -67,6 +67,8 @@ export default function SelectOne({ label, opts }: IProps) {
           ref={selectRef}
           sx={{
             width: "100%",
+            borderRadius: "30px",
+            pl: "10px",
             "& .MuiSelect-select": {
               p: 1,
             },
