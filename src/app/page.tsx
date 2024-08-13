@@ -4,6 +4,7 @@ import topuColors from "@/lib/colors";
 import Card from "@/component/templates/Card";
 import MultipleSelectChip from "@/component/elements/MultipleSelectChip";
 import MultipleSelect from "@/component/elements/MultipleSelect";
+import SelectOne from "@/component/elements/SelectOne";
 
 export default function Home() {
   const optsPosition = [
@@ -98,7 +99,7 @@ export default function Home() {
                 <MultipleSelect label="ポジション" opts={optsPosition} />
               </Grid>
               <Grid item xs={4}>
-                <MultipleSelect label="進行方式" opts={opts} />
+                <SelectOne label="進行方式" opts={opts} />
               </Grid>
             </Grid>
           </Stack>

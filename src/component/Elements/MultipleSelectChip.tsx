@@ -133,6 +133,7 @@ export default function MultipleSelectChip({ label }: IProps) {
             vertical: "top",
             horizontal: "left",
           },
+          disableScrollLock: true,
         }}
       >
         {names.map((name) => (

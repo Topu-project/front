@@ -10,14 +10,6 @@ import { useEffect, useRef, useState } from "react";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
 
 function getStyles(name: string, personName: string[], theme: Theme) {
   return {
@@ -33,7 +25,7 @@ type IProps = {
   opts: string[];
 };
 
-export default function MultipleSelect({ label, opts }: IProps) {
+export default function SelectOne({ label, opts }: IProps) {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState<string[]>([]);
   const selectRef = useRef<HTMLDivElement>(null);
@@ -69,7 +61,6 @@ export default function MultipleSelect({ label, opts }: IProps) {
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
-          multiple
           value={personName}
           onChange={handleChange}
           input={<OutlinedInput label={label} />}

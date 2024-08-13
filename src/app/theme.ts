@@ -7,7 +7,13 @@ const theme = createTheme({
     fontFamily: '"Noto Sans JP", sans-serif',
     fontSize: 14,
   },
-  // 기타 테마 설정...
+  components: {
+    MuiModal: {
+      defaultProps: {
+        disableScrollLock: true,
+      },
+    },
+  },
 });
 
 export default theme;
