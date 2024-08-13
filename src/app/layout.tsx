@@ -43,7 +43,7 @@ export default function RootLayout({
           >
             <Header />
           </header>
-          <div style={{ padding: "200px" }}>{children}</div>
+          <div style={{ paddingInline: "200px" }}>{children}</div>
           <Footer />
         </ThemeRegistry>
       </body>
