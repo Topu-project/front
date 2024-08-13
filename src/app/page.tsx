@@ -1,10 +1,24 @@
 import * as React from "react";
-import { Pagination, Stack } from "@mui/material";
+import { Button, ButtonGroup, Grid, Pagination, Stack } from "@mui/material";
 import topuColors from "@/lib/colors";
 import Card from "@/component/templates/Card";
-import Footer from "@/component/Footer";
+import MultipleSelectChip from "@/component/elements/MultipleSelectChip";
+import MultipleSelect from "@/component/elements/MultipleSelect";
 
 export default function Home() {
+  const optsPosition = [
+    "全体",
+    "フロントエンド",
+    "バッグエンド",
+    "デザイナー",
+    "IOS",
+    "アンドロイド",
+    "dev ops",
+    "PM",
+    "企画",
+    "マーケータ",
+  ];
+  const opts = ["オンライン", "オフライン", "オン・オフライン"];
   return (
     <>
       <Stack
@@ -12,7 +26,7 @@ export default function Home() {
           overflow: "hidden",
           display: "flex",
           flexDirection: "column",
-          gap: "20px",
+          // gap: "20px",
         }}
       >
         <Stack
@@ -22,7 +36,7 @@ export default function Home() {
             width: "100%",
             height: "306px",
             marginInline: "auto",
-            borderRadius: "36px",
+            borderRadius: "10px",
             background: "#d9d9d9",
           }}
         />
@@ -31,19 +45,62 @@ export default function Home() {
             display: "flex",
             flexDirection: "column",
             justifyContent: "flex-start",
-            marginTop: "42px",
+            // marginTop: "42px",
           }}
         >
-          {/** header part */}
+          {/** All tap part */}
           <Stack>
-            <Stack
-              style={{
-                font: "24px bold",
-                color: topuColors.pointColor.purpleMain,
-              }}
+            <ButtonGroup
+              variant="text"
+              aria-label="Basic button group"
+              color="secondary"
+              sx={{ height: "20px", mt: "38px", mb: "46px" }}
             >
-              今週の話題
-            </Stack>
+              <Button
+                sx={{
+                  width: "100px",
+                  fontSize: "20px",
+                  fontWeight: 600,
+                  color: topuColors.pointColor.purpleMain,
+                }}
+              >
+                All
+              </Button>
+              <Button
+                sx={{
+                  width: "140px",
+                  fontSize: "20px",
+                  fontWeight: 600,
+                  color: topuColors.grey.strongGrey,
+                }}
+              >
+                プロジェクト
+              </Button>
+              <Button
+                sx={{
+                  width: "140px",
+                  fontSize: "20px",
+                  fontWeight: 600,
+                  color: topuColors.grey.strongGrey,
+                }}
+              >
+                勉強会
+              </Button>
+            </ButtonGroup>
+          </Stack>
+          {/** select group part */}
+          <Stack sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2} columns={16}>
+              <Grid item xs={8}>
+                <MultipleSelectChip label="記述スタック" />
+              </Grid>
+              <Grid item xs={4}>
+                <MultipleSelect label="ポジション" opts={optsPosition} />
+              </Grid>
+              <Grid item xs={4}>
+                <MultipleSelect label="進行方式" opts={opts} />
+              </Grid>
+            </Grid>
           </Stack>
           {/** cards part */}
           <Card />
