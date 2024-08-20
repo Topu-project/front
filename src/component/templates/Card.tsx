@@ -1,3 +1,4 @@
+import { RecruitmentList } from "@/component/recruitments/RecruitmentList";
 import topuColors from "@/lib/colors";
 import { Box, Stack, TextField, Typography } from "@mui/material";
 import React from "react";
@@ -21,7 +22,7 @@ export default function Card() {
           p: "20px",
         }}
       >
-        <Typography>勉強会</Typography>
+        <RecruitmentList />
       </Stack>
     </Box>
   );

@@ -13,13 +13,13 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import topuColors from "@/lib/colors";
-import Card from "@/component/templates/Card";
 import MultipleSelectChip from "@/component/elements/MultipleSelectChip";
 import MultipleSelect from "@/component/elements/MultipleSelect";
 import SelectOne from "@/component/elements/SelectOne";
 import CommonButton from "@/component/elements/CommonButton";
 import { white } from "@/lib/colorConfig";
 import { AccountCircle } from "@mui/icons-material";
+import Card from "@/component/templates/Card";
 
 export default function Home() {
   const optsPosition = [
@@ -57,7 +57,7 @@ export default function Home() {
           }}
         />
         <Stack
-          style={{
+          sx={{
             display: "flex",
             flexDirection: "column",
             justifyContent: "flex-start",
@@ -192,6 +192,7 @@ export default function Home() {
           </Stack>
           {/** cards part */}
           <Card />
+          {/** pagenation */}
         </Stack>
         <Pagination
           count={10}
