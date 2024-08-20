@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="jp" className={notoSansJP.className} suppressHydrationWarning>
-      <body style={{ display: "flex", flexDirection: "column" }}>
+      <body>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

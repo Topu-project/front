@@ -15,20 +15,35 @@ export default function ClientLayout({
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeRegistry>
-        <header
+        <div
           style={{
-            textDecoration: "none !important",
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingInline: "200px",
-            paddingBlock: "40px",
+            flexDirection: "column",
+            minHeight: "100vh", // 전체 뷰포트 높이를 최소한으로 설정
           }}
         >
-          <Header />
-        </header>
-        <div style={{ paddingInline: "200px" }}>{children}</div>
-        <Footer />
+          <header
+            style={{
+              textDecoration: "none !important",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingInline: "200px",
+              paddingBlock: "40px",
+            }}
+          >
+            <Header />
+          </header>
+          <main
+            style={{
+              paddingInline: "200px",
+              flex: 1, // 남은 공간을 모두 차지하도록 설정
+            }}
+          >
+            {children}
+          </main>
+          <Footer />
+        </div>
       </ThemeRegistry>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
