@@ -20,17 +20,8 @@ import { Recruitment } from "@/lib/recruitments/types";
 // 5.응답 반환: NextResponse.json()을 사용하여 JSON 형식의 응답을 생성합니다.
 export async function GET() {
   // 여기에서 실제 데이터를 가져오는 로직을 구현합니다.
-  const recruitments: Recruitment[] = [
-    {
-      subject: "Software Engineer",
-      recruitmentCategories: "Engineering",
-      techStacks: ["React", "Node.js"],
-      recruitmentPositions: ["Frontend", "Backend"],
-      recruitmentDeadline: "2024-12-31",
-    },
-    // 더 많은 채용 정보...
-  ];
-
+  const recruitments: Recruitment[] = await fetchRecruitments();
+  console.log("recruitments", recruitments);
   return NextResponse.json(recruitments);
 }
 // export async function GET() {

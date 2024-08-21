@@ -36,7 +36,9 @@ const API_BASE_URL =
 // 채용 정보를 가져오는 API 호출 함수 fetchRecruitments를 정의
 // :모든 채용 정보를 반환합니다. 실제 구현에서는 데이터베이스 쿼리를 수행해야 합니다.
 export const fetchRecruitments = async (): Promise<Recruitment[]> => {
-  const response = await fetch("/api/recruitments");
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/recruitments`
+  );
   if (!response.ok) {
     throw new Error("Failed to fetch recruitments");
   }
