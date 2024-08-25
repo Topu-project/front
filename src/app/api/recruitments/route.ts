@@ -18,12 +18,12 @@ import { Recruitment } from "@/lib/recruitments/types";
 // 3.요청 처리: 클라이언트가 /api/recruitments로 GET 요청을 보내면, Next.js는 자동으로 이 GET() 함수를 실행합니다. 함수 내에서 fetchRecruitments()를 호출하여 데이터를 가져오고, 그 결과를 JSON 형태로 반환합니다.
 // 4.에러 처리: try-catch 블록을 사용하여 에러를 잡아내고, 에러 발생 시 500 상태 코드와 함께 에러 메시지를 반환합니다.
 // 5.응답 반환: NextResponse.json()을 사용하여 JSON 형식의 응답을 생성합니다.
-export async function GET() {
-  // 여기에서 실제 데이터를 가져오는 로직을 구현합니다.
-  const recruitments: Recruitment[] = await fetchRecruitments();
-  console.log("recruitments", recruitments);
-  return NextResponse.json(recruitments);
-}
+// export async function GET() {
+//   // 여기에서 실제 데이터를 가져오는 로직을 구현합니다.
+//   const recruitments: Recruitment[] = await fetchRecruitments();
+//   console.log("recruitments", recruitments);
+//   return NextResponse.json(recruitments);
+// }
 // export async function GET() {
 //   // 여기에서 실제 데이터를 가져오는 로직을 구현합니다.
 //   const recruitments = [

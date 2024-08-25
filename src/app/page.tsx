@@ -6,10 +6,8 @@ import {
   Grid,
   Input,
   InputAdornment,
-  InputLabel,
   Pagination,
   Stack,
-  TextField,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import topuColors from "@/lib/colors";
@@ -18,8 +16,7 @@ import MultipleSelect from "@/component/elements/MultipleSelect";
 import SelectOne from "@/component/elements/SelectOne";
 import CommonButton from "@/component/elements/CommonButton";
 import { white } from "@/lib/colorConfig";
-import { AccountCircle } from "@mui/icons-material";
-import Card from "@/component/templates/Card";
+import RecruitmentsPage from "./recruitments/page";
 
 export default function Home() {
   const optsPosition = [
@@ -191,7 +188,7 @@ export default function Home() {
             </Grid>
           </Stack>
           {/** cards part */}
-          <Card />
+          <RecruitmentsPage />
           {/** pagenation */}
         </Stack>
         <Pagination
