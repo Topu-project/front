@@ -16,40 +16,27 @@ import {
 } from "@mui/material";
 import { useRef, useState } from "react";
 import { AddCircle } from "@mui/icons-material";
-import CommonButton from "./CommonButton";
+import CommonButton from "../elements/CommonButton";
 import { white } from "@/lib/colorConfig";
 import topuColors from "@/lib/colors";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const names = [
-  "JavaScript",
-  "TypeScript",
-  "React",
-  "Vue",
-  "Svelt",
-  "Nextjs",
-  "Nodejs",
-  "Java",
-  "Spring",
-  "Go",
+const optsPosition = [
+  // "全体",
+  "フロントエンド",
+  "バッグエンド",
+  "デザイナー",
+  "IOS",
+  "アンドロイド",
+  "dev ops",
+  "PM",
+  "企画",
+  "マーケータ",
 ];
-const names2 = ["JavaScript", "TypeScript", "React", "Vue", "Svelt", "Nextjs"];
-const names3 = ["Nodejs", "Java", "Spring", "Go"];
 
-function getStyles(name: string, stackName: readonly string[], theme: Theme) {
+function getStyles(name: string, position: readonly string[], theme: Theme) {
   return {
     fontWeight:
-      stackName.indexOf(name) === -1
+      position.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
@@ -106,9 +93,9 @@ type IProps = {
   label: string;
 };
 
-export default function MultipleSelectChip({ label }: IProps) {
+export default function PositionMultipleSelectChip({ label }: IProps) {
   const theme = useTheme();
-  const [stackName, setStackName] = React.useState<string[]>([]);
+  const [position, setStackName] = React.useState<string[]>([]);
   const selectRef = useRef<HTMLDivElement>(null);
   const [menuWidth, setMenuWidth] = useState<number | undefined>(undefined);
   const [tabValue, setTabValue] = React.useState(0);
@@ -130,7 +117,7 @@ export default function MultipleSelectChip({ label }: IProps) {
   const handleDelete = (valueToDelete: string) => (event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    const newValue = stackName.filter((name) => name !== valueToDelete);
+    const newValue = position.filter((name) => name !== valueToDelete);
     setStackName(newValue);
   };
 
@@ -170,10 +157,11 @@ export default function MultipleSelectChip({ label }: IProps) {
         open={open}
         onClose={handleClose}
         onOpen={handleOpen}
-        value={stackName}
+        value={position}
         input={<OutlinedInput id="select-multiple-chip" label={label} />}
         ref={selectRef}
         sx={{
+          // minWidth: "200px",
           borderRadius: "30px",
           pl: "10px",
           "& .MuiSelect-select": {
@@ -186,8 +174,8 @@ export default function MultipleSelectChip({ label }: IProps) {
           },
         }}
         renderValue={(selected) => {
-          return stackName.length < 2 ? (
-            <Typography fontSize={"14px"}>{stackName[0]}</Typography>
+          return position.length < 2 ? (
+            <Typography fontSize={"14px"}>{position[0]}</Typography>
           ) : (
             <Stack
               sx={{
@@ -195,10 +183,10 @@ export default function MultipleSelectChip({ label }: IProps) {
                 flexDirection: "row",
                 alignItems: "center",
                 my: "auto",
-                gap: "6px",
+                gap: "3px",
               }}
             >
-              <Typography fontSize={"14px"}>{stackName[0]}</Typography>
+              <Typography fontSize={"14px"}>{position[0]}</Typography>
               <Chip
                 icon={
                   <AddCircle
@@ -215,10 +203,10 @@ export default function MultipleSelectChip({ label }: IProps) {
                       mr: "-4px",
                     }}
                   >
-                    {stackName.length - 1}
+                    {position.length - 1}
                   </Typography>
                 }
-                sx={{ p: "3px", height: "20px" }}
+                sx={{ p: "1px", height: "20px" }}
               />
             </Stack>
           );
@@ -256,9 +244,9 @@ export default function MultipleSelectChip({ label }: IProps) {
             onChange={handleTabChange}
             aria-label="ant example"
           >
-            <AntTab label="All" />
-            <AntTab label="フロントエンド" />
-            <AntTab label="バッグエンド" />
+            <AntTab label="Position" />
+            {/* <AntTab label="フロントエンド" />
+            <AntTab label="バッグエンド" /> */}
             {/* <AntTab label="Tab 3" /> */}
           </AntTabs>
           <CommonButton
@@ -287,14 +275,14 @@ export default function MultipleSelectChip({ label }: IProps) {
         </Box>
         {tabValue === 0 && (
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, p: 1 }}>
-            {names.map((name) => (
+            {optsPosition.map((name) => (
               <MenuItem
                 key={name}
                 value={name}
                 onClick={(event) => handleChange(event, name)}
-                style={getStyles(name, stackName, theme)}
+                style={getStyles(name, position, theme)}
                 sx={{
-                  bgcolor: stackName.includes(name)
+                  bgcolor: position.includes(name)
                     ? "action.selected"
                     : "transparent",
                   "&:hover": {
@@ -309,16 +297,16 @@ export default function MultipleSelectChip({ label }: IProps) {
             ))}
           </Box>
         )}
-        {tabValue === 2 && (
+        {/* {tabValue === 2 && (
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, p: 1 }}>
             {names3.map((name) => (
               <MenuItem
                 key={name}
                 value={name}
                 onClick={(event) => handleChange(event, name)}
-                style={getStyles(name, stackName, theme)}
+                style={getStyles(name, position, theme)}
                 sx={{
-                  bgcolor: stackName.includes(name)
+                  bgcolor: position.includes(name)
                     ? "action.selected"
                     : "transparent",
                   "&:hover": {
@@ -338,9 +326,9 @@ export default function MultipleSelectChip({ label }: IProps) {
                 key={name}
                 value={name}
                 onClick={(event) => handleChange(event, name)}
-                style={getStyles(name, stackName, theme)}
+                style={getStyles(name, position, theme)}
                 sx={{
-                  bgcolor: stackName.includes(name)
+                  bgcolor: position.includes(name)
                     ? "action.selected"
                     : "transparent",
                   "&:hover": {
@@ -352,7 +340,7 @@ export default function MultipleSelectChip({ label }: IProps) {
               </MenuItem>
             ))}
           </Box>
-        )}
+        )} */}
         {/** chips area */}
         <Box
           sx={{
@@ -363,7 +351,7 @@ export default function MultipleSelectChip({ label }: IProps) {
             mb: "4px",
           }}
         >
-          {stackName.map((name) => (
+          {position.map((name) => (
             <Chip
               key={name}
               label={name}
