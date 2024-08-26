@@ -189,14 +189,7 @@ export default function Home() {
           </Stack>
           {/** cards part */}
           <RecruitmentsPage />
-          {/** pagenation */}
         </Stack>
-        <Pagination
-          count={10}
-          variant="outlined"
-          color="secondary"
-          sx={{ marginInline: "auto", marginBottom: "30px" }}
-        />
       </Stack>
     </>
   );
