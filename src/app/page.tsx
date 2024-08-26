@@ -113,7 +113,7 @@ export default function Home() {
               <Grid item xs={3}>
                 <SelectOne label="進行方式" opts={opts} />
               </Grid>
-              <Grid item xs={2}>
+              {/* <Grid item xs={2}>
                 <CommonButton
                   text={"👀 お気に入りを見る"}
                   href=""
@@ -166,7 +166,7 @@ export default function Home() {
                     },
                   }}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={3}>
                 <FormControl sx={{ width: "100%" }}>
                   <Input

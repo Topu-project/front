@@ -14,8 +14,8 @@ export interface Recruitment {
   id: string;
   created_at: string;
   updated_at: string;
-  recruitment_categories: string;
-  progress_methods: string;
+  recruitment_categories: "STUDY" | "PROJECT" | "READING";
+  progress_methods: "ONLINE" | "OFFLINE" | "ALL";
   tech_stacks: string[];
   positions: string;
   number_of_people: number;
