@@ -2,7 +2,7 @@
 
 import React from "react";
 import { RecruitmentResponse } from "@/lib/recruitments/types";
-import Card from "../templates/Card";
+import Card from "./Card";
 import { Stack } from "@mui/material";
 
 const RecruitmentList = ({ data }: RecruitmentResponse) => {
@@ -16,7 +16,9 @@ const RecruitmentList = ({ data }: RecruitmentResponse) => {
       }}
     >
       {data &&
-        data.map((recruitment, index) => <Card recruitment={recruitment} />)}
+        data.map((recruitment, index) => (
+          <Card recruitment={recruitment} key={index} />
+        ))}
     </Stack>
   );
 };
