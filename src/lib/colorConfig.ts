@@ -8,4 +8,4 @@ export const strongGrey = grey[800]; // #424242
 export const middlegGrey = grey[400]; // #bdbdbd
 export const lightGrey = grey[200]; // #eeeeee
 export const grey600 = grey[600]; // #eeeeee
-export const lightBlue = "lightBlue"; // #4FB1F9
+export const lightBlue = "#4FB1F9"; // #4FB1F9
