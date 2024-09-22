@@ -93,103 +93,111 @@ export default function RecruitmentPage({ params: { slug } }: Props) {
           maxWidth: 800,
           margin: "auto",
           p: 3,
+          // border: "1px solid #e0e0e0", // 구분을 위한 경계선 추가
+          // borderRadius: 2,
         }}
       >
+        {/* 프로필 섹션 */}
         <Box
           sx={{
             display: "flex",
-            flexDirection: "row",
-            // alignItems: "center",
-            // width: "282px",
-            // height: "40px",
-            // top: "307px",
-            // left: "211px",
+            alignItems: "center",
+            mb: 2,
           }}
         >
-          <Avatar sx={{ width: 24, height: 24, mr: 1 }}>D</Avatar>
-          <Typography variant="caption">dev_Lee 2024.06.18</Typography>
-          <Divider sx={{ my: 3 }} />
-
-          <Grid container spacing={1} sx={{ mb: 2 }}>
-            {[
-              { label: "募集職種", value: "プロジェクト" },
-              { label: "募集人数", value: "1名" },
-              { label: "単価/月", value: "LINE" },
-              { label: "開発環境", value: "iOS、アンドロイド" },
-              { label: "勤務方式", value: "オン・オフライン" },
-              { label: "開始日", value: "2024.07.31" },
-              { label: "予定期間", value: "2ヶ月" },
-              { label: "使用言語", value: ["中", "英", "韓"] },
-            ].map((item, index) => (
-              <Grid item xs={12} key={index}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    color="#9C27B0"
-                    sx={{ minWidth: 70 }}
-                  >
-                    {item.label}
-                  </Typography>
-                  {/* 배열인지 아닌지 체크하여 다르게 렌더링 */}
-                  {Array.isArray(item.value) ? (
-                    <Box sx={{ ml: 2 }}>
-                      {item.value.map((lang, langIndex) => (
-                        <Chip
-                          key={langIndex}
-                          label={lang}
-                          size="small"
-                          sx={{ mr: 0.5 }}
-                        />
-                      ))}
-                    </Box>
-                  ) : (
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "#000000", ml: 2 }}
-                    >
-                      {item.value}
-                    </Typography>
-                  )}
-                </Box>
-              </Grid>
-            ))}
-          </Grid>
-          <Divider sx={{ my: 3 }} />
+          <Avatar sx={{ width: 40, height: 40, mr: 2 }}>D</Avatar>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Typography variant="body1" fontWeight="bold">
+              dev_Lee
+            </Typography>
+            <Typography variant="caption" color="textSecondary">
+              2024.06.18
+            </Typography>
+          </Box>
         </Box>
-        <CommonButton
-          text={"修正"}
-          sx={{
-            variant: "contained",
-            backgroundColor: topuColors.pointColor.lightBlue,
-            color: "white",
-            fontSize: "18px",
-            minWidth: "80px",
-            maxHeight: "42px",
-            borderRadius: 40,
-          }}
-        />
-        <CommonButton
-          text={"削除"}
-          sx={{
-            variant: "contained",
-            backgroundColor: topuColors.pointColor.lightBlue,
-            color: "white",
-            fontSize: "18px",
-            minWidth: "80px",
-            maxHeight: "42px",
-            borderRadius: 40,
-          }}
-        />
+
+        <Divider sx={{ my: 2 }} />
+
+        {/* 정보 섹션 */}
+        <Grid container spacing={1}>
+          {[
+            { label: "募集職種", value: "プロジェクト" },
+            { label: "募集人数", value: "1名" },
+            { label: "単価/月", value: "LINE" },
+            { label: "開発環境", value: "iOS、アンドロイド" },
+            { label: "勤務方式", value: "オン・オフライン" },
+            { label: "開始日", value: "2024.07.31" },
+            { label: "予定期間", value: "2ヶ月" },
+            { label: "使用言語", value: ["中", "英", "韓"] },
+          ].map((item, index) => (
+            <Grid item xs={12} key={index}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  sx={{ color: "#9C27B0", minWidth: 80, fontWeight: "bold" }}
+                >
+                  {item.label}
+                </Typography>
+                {Array.isArray(item.value) ? (
+                  <Box sx={{ ml: 2, display: "flex" }}>
+                    {item.value.map((lang, langIndex) => (
+                      <Chip
+                        key={langIndex}
+                        label={lang}
+                        size="small"
+                        sx={{ mr: 0.5 }}
+                      />
+                    ))}
+                  </Box>
+                ) : (
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "#000000", ml: 2, fontWeight: "bold" }}
+                  >
+                    {item.value}
+                  </Typography>
+                )}
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+
+        <Divider sx={{ my: 2 }} />
       </Box>
       {/* 本文 Area */}
       <Box>
         <Grid>
+          {/* 버튼 섹션 */}
+          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+            <CommonButton
+              text={"修正"}
+              sx={{
+                backgroundColor: topuColors.pointColor.lightBlue,
+                color: "white",
+                fontSize: "18px",
+                minWidth: "80px",
+                maxHeight: "42px",
+                borderRadius: 40,
+                mr: 1,
+              }}
+            />
+            <CommonButton
+              text={"削除"}
+              sx={{
+                backgroundColor: topuColors.pointColor.lightBlue,
+                color: "white",
+                fontSize: "18px",
+                minWidth: "80px",
+                maxHeight: "42px",
+                borderRadius: 40,
+              }}
+            />
+          </Box>
           <Typography variant="h6" gutterBottom>
             プロジェクトのご紹介
           </Typography>
