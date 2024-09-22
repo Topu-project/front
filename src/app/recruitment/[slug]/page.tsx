@@ -10,7 +10,11 @@ import {
   Divider,
   Grid,
 } from "@mui/material";
+import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineSharp";
+import VisibilitySharpIcon from "@mui/icons-material/VisibilitySharp";
 import { notFound } from "next/navigation";
+import CommonButton from "@/component/elements/CommonButton";
+import topuColors from "@/lib/colors";
 
 type Props = {
   params: {
@@ -43,19 +47,41 @@ export default function RecruitmentPage({ params: { slug } }: Props) {
           mb: 3,
         }}
       >
-        <h1>{slug} 詳細ページ</h1>
+        <ArrowBack
+          sx={{
+            fontSize: "20px",
+            mr: 1,
+            width: 50,
+            height: 50,
+            top: 164,
+            left: 192,
+          }}
+        />
+
         <Box
           sx={{
             display: "flex",
             flexDirection: "row",
+            width: 1217,
+            height: 23,
+            top: 244,
+            left: 201,
           }}
         >
-          <ArrowBack sx={{ fontSize: 20, mr: 1 }} />
           <Typography
             variant="subtitle1"
-            sx={{ flexGrow: 1, fontSize: "0.9rem" }}
+            sx={{
+              flexGrow: 1,
+              fontSize: "32px",
+              color: "#000000",
+              fontFamily: "Inter",
+              textSizeAdjust: 32,
+              fontWeight: 800,
+              lineHeight: 38.73,
+              textalign: "left",
+            }}
           >
-            AIエデュケーションサービスチーム員募集AIエデュケーションサービスチーム
+            AIエデュケーションサービスチーム員募集AIエデュケーションサービスチーム員募集
           </Typography>
         </Box>
         <Box
@@ -63,10 +89,57 @@ export default function RecruitmentPage({ params: { slug } }: Props) {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
+            width: "282px",
+            height: "40px",
+            top: "307px",
+            left: "211px",
           }}
         >
           <Avatar sx={{ width: 24, height: 24, mr: 1 }}>D</Avatar>
           <Typography variant="caption">dev_Lee 2024.06.18</Typography>
+          <Divider sx={{ my: 3 }} />
+
+          <Grid container spacing={1} sx={{ mb: 2 }}>
+            {[
+              { label: "募集職種", value: "プロジェクト" },
+              { label: "募集人数", value: "1名" },
+              { label: "単価/月", value: "LINE" },
+              { label: "開発環境", value: "iOS、アンドロイド" },
+              { label: "勤務方式", value: "オン・オフライン" },
+              { label: "開始日", value: "2024.07.31" },
+              { label: "予定期間", value: "2ヶ月" },
+            ].map((item, index) => (
+              <Grid item xs={12} sm={6} key={index}>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Typography
+                    variant="caption"
+                    color="primary"
+                    sx={{ minWidth: 70 }}
+                  >
+                    {item.label}
+                  </Typography>
+                  <Typography variant="body2">{item.value}</Typography>
+                </Box>
+              </Grid>
+            ))}
+            <Grid item xs={12}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Typography
+                  variant="caption"
+                  color="primary"
+                  sx={{ minWidth: 70 }}
+                >
+                  使用言語
+                </Typography>
+                <Box>
+                  <Chip label="中" size="small" sx={{ mr: 0.5 }} />
+                  <Chip label="英" size="small" sx={{ mr: 0.5 }} />
+                  <Chip label="韓" size="small" />
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
+          <Divider sx={{ my: 3 }} />
         </Box>
       </Box>
       <Box sx={{ maxWidth: 800, margin: "auto", p: 3 }}>
@@ -76,47 +149,6 @@ export default function RecruitmentPage({ params: { slug } }: Props) {
         <Typography variant="body2" paragraph>
           1億から2億人の若者向けにフルリモート/アフターコロナを意識したコンテンツシェアリング(SNS統合)、を開発
         </Typography>
-
-        <Grid container spacing={1} sx={{ mb: 2 }}>
-          {[
-            { label: "募集職種", value: "プロジェクト" },
-            { label: "募集人数", value: "1名" },
-            { label: "単価/月", value: "LINE" },
-            { label: "開発環境", value: "iOS、アンドロイド" },
-            { label: "勤務方式", value: "オン・オフライン" },
-            { label: "開始日", value: "2024.07.31" },
-            { label: "予定期間", value: "2ヶ月" },
-          ].map((item, index) => (
-            <Grid item xs={12} sm={6} key={index}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Typography
-                  variant="caption"
-                  color="primary"
-                  sx={{ minWidth: 70 }}
-                >
-                  {item.label}
-                </Typography>
-                <Typography variant="body2">{item.value}</Typography>
-              </Box>
-            </Grid>
-          ))}
-          <Grid item xs={12}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography
-                variant="caption"
-                color="primary"
-                sx={{ minWidth: 70 }}
-              >
-                使用言語
-              </Typography>
-              <Box>
-                <Chip label="中" size="small" sx={{ mr: 0.5 }} />
-                <Chip label="英" size="small" sx={{ mr: 0.5 }} />
-                <Chip label="韓" size="small" />
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
 
         <Typography variant="body2" paragraph>
           ＜複雑なシステムを単純に、かつ女性視点で、一緒につくる。＞
@@ -220,9 +252,35 @@ export default function RecruitmentPage({ params: { slug } }: Props) {
 
         <Divider sx={{ my: 3 }} />
 
-        <Typography variant="subtitle1" gutterBottom>
-          コメント
-        </Typography>
+        <Box
+          sx={{
+            flexWrap: "nowrap",
+          }}
+        >
+          <Grid>
+            <Typography variant="subtitle1" gutterBottom>
+              コメント
+            </Typography>
+            <Typography
+              sx={{
+                //styleName: NOTO SANS/20 bold;
+                fontFamily: "Noto Sans JP",
+                fontSize: "20px",
+                fontWeight: 700,
+                lineHeight: "28.96px",
+                textAlign: "left",
+              }}
+            >
+              0
+            </Typography>
+          </Grid>
+          <Grid>
+            <VisibilitySharpIcon />
+            <Typography>54</Typography>
+            <CheckCircleOutlineSharpIcon />
+            <Typography>2</Typography>
+          </Grid>
+        </Box>
         <Box sx={{ display: "flex", alignItems: "flex-start", mb: 2 }}>
           <Avatar sx={{ mr: 2, width: 32, height: 32 }}>D</Avatar>
           <TextField
@@ -234,9 +292,18 @@ export default function RecruitmentPage({ params: { slug } }: Props) {
           />
         </Box>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button variant="contained" color="primary" size="small">
-            コメント投稿
-          </Button>
+          <CommonButton
+            text={"コメント投稿"}
+            sx={{
+              variant: "contained",
+              backgroundColor: topuColors.pointColor.lightBlue,
+              color: "white",
+              fontSize: "18px",
+              minWidth: "225px",
+              maxHeight: "42.25px",
+              borderRadius: 40,
+            }}
+          ></CommonButton>
         </Box>
       </Box>
     </>
