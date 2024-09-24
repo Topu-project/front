@@ -6,6 +6,8 @@ import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import EmptyTextarea from '@/component/Elements/EmptyTextarea';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { fetchAuthd } from '@/service/requestService';
+import { Recruitment } from '@/types/recruitment';
 
 const name = "かわいい猫"
 
@@ -52,7 +54,6 @@ export default function erofilePExpYear() {
 
   const theme = useTheme();
   const [personName, setPersonName] = React.useState<string[]>([]);
-
     const handleChangeForStacks = (event: SelectChangeEvent<typeof personName>) => {
       const {
         target: { value },
@@ -63,6 +64,16 @@ export default function erofilePExpYear() {
       );
     };
 
+    const recruitmentFetch = {
+      url: '/recruitments/1',
+      token: 'your_token',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    
+    const recruitmentData = fetchAuthd<Recruitment>(recruitmentFetch);
+    console.log(recruitmentData);
 
   return (
     <Box>
