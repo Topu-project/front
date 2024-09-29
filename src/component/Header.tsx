@@ -97,7 +97,31 @@ export default function Header() {
         />
         <CommonButton
           text={"ログイン"}
-          href="/login"
+          href="/login/"
+          size="large"
+          sx={{
+            backgroundColor: "rgba(0, 0, 0, 0) !important",
+            color: topuColors.grey.strongGrey,
+            boxShadow: "none !important",
+            fontSize: "18px",
+            minWidth: "125px",
+            maxHeight: "42.25px",
+            marginLeft: "-20px",
+            ":hover": {
+              backgroundColor: "rgba(0, 0, 0, 0) !important",
+              boxShadow: "none !important",
+              color: "rgba(0, 0, 0, 0.6)",
+            },
+            "&:active": {
+              backgroundColor: "rgba(0, 0, 0, 0) !important",
+              boxShadow: "none !important",
+              color: "rgba(0, 0, 0, 0.6)",
+            },
+          }}
+        />
+        <CommonButton
+          text={"ログアウト"}
+          // href="/login"
           size="large"
           sx={{
             backgroundColor: "rgba(0, 0, 0, 0) !important",
