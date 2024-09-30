@@ -2,10 +2,12 @@
 
 import topuColors from "@/lib/colors";
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
-import React from "react";
-import GoogleIcon from "../../../public/icon/etc/system/GoogleIcon";
+import React, { useEffect, useState } from "react";
+import GoogleIcon from "../../../../public/icon/etc/system/GoogleIcon";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
-export default function Login() {
+export default function LoginRetry() {
   return (
     <React.Fragment>
       <Stack
@@ -42,11 +44,10 @@ export default function Login() {
             }}
           >
             <Typography fontSize={"30px"} fontWeight={"bold"}>
-              TOPUへようこそ！
+              ログインに失敗しました。
             </Typography>
             <Typography fontSize={"18px"} textAlign={"center"}>
-              勉強会やサイドプロジェクトを見つける最も簡単な方法！
-              TOPUで一緒にやるチームメンバーを探す
+              再度ログインしてください。
             </Typography>
             <Divider sx={{ width: "100%" }} />
             <Button
