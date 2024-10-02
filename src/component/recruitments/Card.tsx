@@ -1,5 +1,6 @@
 import topuColors from "@/lib/colors";
 import { Recruitment } from "@/lib/recruitments/types";
+import { useRouter } from "next/navigation";
 import {
   Bookmarks,
   Javascript,
@@ -13,6 +14,12 @@ interface CardProps {
   recruitment: Recruitment;
 }
 const Card: React.FC<CardProps> = ({ recruitment }) => {
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    router.push(`/recruitment/${recruitment.id}`);
+  };
+
   return (
     <Box
       sx={{
@@ -25,7 +32,10 @@ const Card: React.FC<CardProps> = ({ recruitment }) => {
         overflow: "hidden",
         p: "20px",
         pb: 0,
+        cursor: "pointer",
+        "&:hover": { backgroundColor: "rgba(0, 0, 0, 0.05)" },
       }}
+      onClick={handleCardClick}
     >
       <Stack
         sx={{
@@ -55,7 +65,7 @@ const Card: React.FC<CardProps> = ({ recruitment }) => {
                 paddingInline: "4px",
               }}
             >
-              {recruitment.recruitment_categories}
+              {recruitment.recruitmentCategories}
             </Typography>
             <Divider orientation="vertical" sx={{ height: "17px" }} />
             <Typography
@@ -70,7 +80,7 @@ const Card: React.FC<CardProps> = ({ recruitment }) => {
                 paddingInline: "4px",
               }}
             >
-              {recruitment.progress_methods}
+              {recruitment.progressMethods}
             </Typography>
             <Divider orientation="vertical" sx={{ height: "17px" }} />
             <Typography
@@ -94,7 +104,7 @@ const Card: React.FC<CardProps> = ({ recruitment }) => {
             }}
           >
             {"募集締日｜~" +
-              recruitment.recruitment_deadline
+              recruitment.recruitmentDeadline
                 .replaceAll("-", "/")
                 .substring(0, 10) +
               "まで"}
@@ -103,7 +113,10 @@ const Card: React.FC<CardProps> = ({ recruitment }) => {
         <ButtonBase
           focusRipple
           sx={{ width: "20px", height: "20px", color: "#FFD600" }}
-          onClick={() => console.log("saved!")}
+          onClick={(e) => {
+            e.stopPropagation(); // 상위 Box의 onClick 이벤트 버블링을 막음
+            console.log("saved!");
+          }}
         >
           <Bookmarks />
         </ButtonBase>
@@ -127,7 +140,7 @@ const Card: React.FC<CardProps> = ({ recruitment }) => {
         {recruitment.subject}
       </Typography>
       <Typography sx={{ fontSize: "12px", fontWeight: "800" }}>
-        {"•" + recruitment.tech_stacks.join(", ")}
+        {"•" + recruitment.techStacks.join(", ")}
       </Typography>
       <Stack
         sx={{
@@ -180,10 +193,10 @@ const Card: React.FC<CardProps> = ({ recruitment }) => {
           }}
         >
           <Typography sx={{ fontSize: "12px" }}>
-            {recruitment.number_of_people}
+            {recruitment.numberOfPeople}
           </Typography>
           <Typography sx={{ fontSize: "12px" }}>
-            {recruitment.progress_period}
+            {recruitment.progressPeriod}
           </Typography>
         </Stack>
       </Stack>
