@@ -8,6 +8,19 @@ import topuColors from "@/lib/colors";
 import React, { useEffect, useState } from "react";
 import { get } from "@/service/requestService";
 import { Recruitment } from "@/lib/recruitments/types";
+import { opts } from "@/app/recruitments/page";
+
+export const recruitmentCategoryMap: { [key: string]: string } = {
+  ONLINE: opts[0],
+  OFFLINE: opts[1],
+  ALL: opts[2],
+};
+
+const recruitmentCategoriesMap: { [key: string]: string } = {
+  ALL: "プロジェクト・研究",
+  PROJECT: "プロジェクト",
+  STUDY: "研究",
+};
 
 type Props = {
   params: {
@@ -27,6 +40,14 @@ interface FetchOptions {
 //     title: `이름 : ${params.slug}`,
 //   };
 // }
+
+// 날짜 형식 변환 함수(YYYY-MM-DD -> YYYY年 MM月 DD日)
+const formatDateToJapanese = (dateString: string): string => {
+  const date = new Date(dateString);
+  return `${date.getFullYear()}年 ${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}月 ${date.getDate().toString().padStart(2, "0")}日`;
+};
 
 export default function RecruitmentPage({ params: { slug } }: Props) {
   const isSelfAccount = true; // TODO: userInfo.isSelfAccount
@@ -189,9 +210,17 @@ export default function RecruitmentPage({ params: { slug } }: Props) {
             {[
               {
                 label: "募集区分",
-                value: recruitmentData.recruitmentCategories,
+                value:
+                  recruitmentCategoriesMap[
+                    recruitmentData.recruitmentCategories
+                  ] || recruitmentData.recruitmentCategories,
               },
-              { label: "連絡方法", value: recruitmentData.progressMethods },
+              {
+                label: "連絡方法",
+                value:
+                  recruitmentCategoryMap[recruitmentData.progressMethods] ||
+                  recruitmentData.progressMethods,
+              },
               { label: "使用言語", value: recruitmentData.techStacks },
               {
                 label: "募集分野",
@@ -207,7 +236,9 @@ export default function RecruitmentPage({ params: { slug } }: Props) {
               },
               {
                 label: "締切日",
-                value: `${recruitmentData.recruitmentDeadline}`,
+                value: formatDateToJapanese(
+                  recruitmentData.recruitmentDeadline
+                ),
               },
               {
                 label: "連絡先",
