@@ -24,7 +24,7 @@ import PositionMultipleSelectChip from "@/component/recruitments/PositionMultipl
 
 const ITEMS_PER_PAGE = 20;
 
-const opts = ["オンライン", "オフライン", "オン・オフライン"];
+export const opts = ["オンライン", "オフライン", "オン・オフライン"];
 
 type TabType = "ALL" | "PROJECT" | "STUDY";
 
@@ -39,7 +39,7 @@ const RecruitmentsPage = () => {
   const filteredData = useMemo(() => {
     if (!data) return [];
     if (activeTab === "ALL") return data;
-    return data.filter((item) => item.recruitment_categories === activeTab);
+    return data.filter((item) => item.recruitmentCategories === activeTab);
   }, [data, activeTab]);
 
   const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);

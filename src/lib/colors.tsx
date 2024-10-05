@@ -7,6 +7,7 @@ import {
   purpleMain,
   purple500,
   grey600,
+  lightBlue,
 } from "./colorConfig";
 
 const topuColors = {
@@ -24,6 +25,7 @@ const topuColors = {
   pointColor: {
     purpleMain: purpleMain,
     purple500: purple500,
+    lightBlue: lightBlue,
   },
 };
 
