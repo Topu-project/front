@@ -4,8 +4,25 @@ import topuColors from "@/lib/colors";
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 import GoogleIcon from "../../../public/icon/etc/system/GoogleIcon";
+import queryString from "query-string";
 
 export default function Login() {
+  const GOOGLE_CLIENT_ID =
+    "930251545265-8215c7g6ghgmgrdghknl511p1u75s3vh.apps.googleusercontent.com";
+
+  const handleLogin = () => {
+    const params = queryString.stringify({
+      client_id: GOOGLE_CLIENT_ID,
+      redirect_uri: `http://localhost:8080/login/oauth2/code/google`,
+      response_type: "code",
+      scope: ["openid", "email", "profile"].join(" "),
+      access_type: "offline",
+      prompt: "consent",
+    });
+
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
+  };
+
   return (
     <React.Fragment>
       <Stack
@@ -50,7 +67,9 @@ export default function Login() {
             </Typography>
             <Divider sx={{ width: "100%" }} />
             <Button
-              href={`http://localhost:8080/auth/login`}
+              onClick={handleLogin}
+              // onClick={() => login()}
+              // href={`http://localhost:8080/auth/login`}
               size="large"
               variant="contained"
               sx={{
