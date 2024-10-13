@@ -8,12 +8,12 @@ import queryString from "query-string";
 
 export default function Login() {
   const GOOGLE_CLIENT_ID =
-    "930251545265-8215c7g6ghgmgrdghknl511p1u75s3vh.apps.googleusercontent.com";
+    "930251545265-82l5c7g6ghgmgrddhknl5l1p1u75s3vh.apps.googleusercontent.com";
 
   const handleLogin = () => {
     const params = queryString.stringify({
       client_id: GOOGLE_CLIENT_ID,
-      redirect_uri: `http://localhost:8080/login/oauth2/code/google`,
+      redirect_uri: `http://localhost:8080/oauth2/authorization/google`,
       response_type: "code",
       scope: ["openid", "email", "profile"].join(" "),
       access_type: "offline",
