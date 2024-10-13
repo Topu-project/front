@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -34,18 +35,24 @@ const techs: Tech[] = [
 
 // API 호출 함수 정의
 const createUser = async (userData: FormData) => {
-  const response = await post<FormData, any>({
-    url: "/auth/signup",
-    body: userData,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
-  return response;
+  try {
+    const response = await post<FormData, any>({
+      url: "/auth/signup",
+      body: userData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: true,
+    });
+    return response;
+  } catch (error) {
+    console.error("Server error details:", error);
+    throw error;
+  }
 };
 
 export default function SignUp() {
+  const router = useRouter();
   const {
     control,
     handleSubmit,
@@ -64,18 +71,24 @@ export default function SignUp() {
     mutationFn: createUser,
     onSuccess: (data) => {
       console.log("사용자 생성 성공:", data);
-      // 성공 시 추가 작업 (예: 로그인 페이지로 리다이렉트)
+      router.push("/");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error("사용자 생성 실패:", error);
-      // 에러 처리 (예: 에러 메시지 표시)
+      // 사용자에게 에러 메시지 표시
+      alert(
+        `회원가입 중 오류가 발생했습니다: ${error.message || "알 수 없는 오류"}`
+      );
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    // 폼 데이터를 API로 전송
-    console.log("data", data);
-    mutation.mutate(data);
+  const onSubmit = async (data: FormData) => {
+    console.log("Submitting data:", data);
+    try {
+      await mutation.mutateAsync(data);
+    } catch (error) {
+      console.error("Mutation error:", error);
+    }
   };
 
   return (
