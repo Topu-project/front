@@ -1,6 +1,6 @@
 const BASE_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}`;
 
-// 사용법 
+// 사용법
 // const recruitmentFetch = {
 //   url: '/recruitments/1',
 //   token: 'your_token',
@@ -9,13 +9,14 @@ const BASE_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}`;
 //   },
 // };
 // const recruitmentData = get<Recruitment>({ recruitmentFetch });
-// 혹은 
+// 혹은
 // const recruitmentData = get<Recruitment>({ url: '/recruitments/1' });
 
 interface FetchOptions {
   url: string;
   token?: string;
   headers?: HeadersInit;
+  credentials?: boolean;
 }
 
 interface RequestOptions<T> extends FetchOptions {
@@ -28,15 +29,19 @@ interface RequestOptions<T> extends FetchOptions {
  * @param method GET/POST/DELETE/PUT
  * @returns data
  */
-async function fetchRequest<T, R>({ url, token, headers, body }: RequestOptions<T>, method: string): Promise<R> {
+async function fetchRequest<T, R>(
+  { url, token, headers, credentials, body }: RequestOptions<T>,
+  method: string
+): Promise<R> {
   console.log(url);
   const response = await fetch(BASE_URL + url, {
     method,
     headers: {
-      'Content-Type': body ? 'application/json' : '', 
+      "Content-Type": body ? "application/json" : "",
       ...(token ? { Auth: token } : {}),
       ...(headers ? headers : {}),
     },
+    credentials: credentials === true ? "include" : undefined,
     body: body ? JSON.stringify(body) : undefined, // body가 있으면 직렬화
   });
 
@@ -51,50 +56,50 @@ async function fetchRequest<T, R>({ url, token, headers, body }: RequestOptions<
 
 /**
  * GET Request <Generic T>
- * @param options 
+ * @param options
  *    url : 리퀘스트URL
- *    token : 인증용토큰(optional) 
- *    headers : 헤더정보<K, V>(optional) 
+ *    token : 인증용토큰(optional)
+ *    headers : 헤더정보<K, V>(optional)
  * @returns data
  */
 export async function get<T>(options: FetchOptions): Promise<T> {
-  return fetchRequest<T, T>(options, 'GET');
+  return fetchRequest<T, T>(options, "GET");
 }
 
 /**
  * DELETE Request <Generic T>
- * @param options 
+ * @param options
  *    url : 리퀘스트URL
- *    token : 인증용토큰(optional) 
- *    headers : 헤더정보<K, V>(optional) 
+ *    token : 인증용토큰(optional)
+ *    headers : 헤더정보<K, V>(optional)
  * @returns data
  */
 export async function del<T>(options: FetchOptions): Promise<T> {
-  return fetchRequest<T, T>(options, 'DELETE');
+  return fetchRequest<T, T>(options, "DELETE");
 }
 
 /**
  * POST Request <Generic T *request model , R *return model>
- * @param options 
+ * @param options
  *    url : 리퀘스트URL
- *    token : 인증용토큰(optional) 
- *    headers : 헤더정보<K, V>(optional) 
+ *    token : 인증용토큰(optional)
+ *    headers : 헤더정보<K, V>(optional)
  * @returns data
  */
 export async function post<T, R>(options: RequestOptions<T>): Promise<R> {
-  return fetchRequest<T, R>(options, 'POST');
+  return fetchRequest<T, R>(options, "POST");
 }
 
 /**
  * PUT Request <Generic T *request model , R *return model>
- * @param options 
+ * @param options
  *    url : 리퀘스트URL
- *    token : 인증용토큰(optional) 
- *    headers : 헤더정보<K, V>(optional) 
+ *    token : 인증용토큰(optional)
+ *    headers : 헤더정보<K, V>(optional)
  * @returns data
  */
 export async function put<T, R>(options: RequestOptions<T>): Promise<R> {
-  return fetchRequest<T, R>(options, 'PUT');
+  return fetchRequest<T, R>(options, "PUT");
 }
 
 // 에러 핸들링 함수

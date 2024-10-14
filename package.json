@@ -16,12 +16,15 @@
     "@mui/icons-material": "^5.15.18",
     "@mui/lab": "^5.0.0-alpha.172",
     "@mui/material": "^5.16.1",
+    "@react-oauth/google": "^0.12.1",
     "@tanstack/react-query": "^5.51.23",
     "@tanstack/react-query-devtools": "^5.51.23",
     "material-ui-popup-state": "^5.1.2",
     "next": "14.2.3",
+    "query-string": "^9.1.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hook-form": "^7.53.0"
   },
   "devDependencies": {
     "@types/node": "^20",

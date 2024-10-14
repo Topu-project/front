@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useQuery } from "@tanstack/react-query";
-import MultipleSelect from "@/component/elements/MultipleSelect";
 import SelectOne from "@/component/elements/SelectOne";
 import topuColors from "@/lib/colors";
 import TechMultipleSelectChip from "@/component/recruitments/TechMultipleSelectChip";
@@ -36,8 +35,9 @@ const RecruitmentsPage = () => {
     queryFn: fetchRecruitments,
   });
 
+  // <=========== Start Cards Filter ===========>
   const filteredData = useMemo(() => {
-    if (!data) return [];
+    if (!data || !Array.isArray(data)) return [];
     if (activeTab === "ALL") return data;
     return data.filter((item) => item.recruitmentCategories === activeTab);
   }, [data, activeTab]);
@@ -59,10 +59,11 @@ const RecruitmentsPage = () => {
     setActiveTab(tab);
     setPage(1); // Reset to first page when changing tabs
   };
+  // <=========== End Cards Filter ===========>
 
-  // if (isLoading) return <div>Loading...</div>;
-  // if (!data) return <div>No data</div>;
-  // if (error) return <div>An error occurred: {(error as Error).message}</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error occurred: {(error as Error).message}</div>;
+  if (!data || !Array.isArray(data)) return <div>No data available</div>;
 
   return (
     <Stack
