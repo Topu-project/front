@@ -23,17 +23,54 @@ import PositionMultipleSelectChip from "@/component/recruitments/PositionMultipl
 
 const ITEMS_PER_PAGE = 20;
 
-export const opts = ["オンライン", "オフライン", "オン・オフライン"];
+export const opts = ["ONLINE", "OFFLINE", "ALL"];
 
 type TabType = "ALL" | "PROJECT" | "STUDY";
 
 const RecruitmentsPage = () => {
   const [page, setPage] = useState(1);
   const [activeTab, setActiveTab] = useState<TabType>("ALL");
-  const { data, isLoading, error } = useQuery<Recruitment[]>({
-    queryKey: ["recruitments"],
-    queryFn: fetchRecruitments,
+  const [stackName, setStackName] = React.useState<string[]>([]);
+  const [positionName, setPositionName] = React.useState<string[]>([]);
+  const [progressMethodsName, setProgressMethodsName] =
+    React.useState<string>();
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [searchWords, setSearchWords] = useState<string>("");
+  const { data, isLoading, error, refetch } = useQuery<Recruitment[]>({
+    queryKey: ["recruitments", stackName],
+    queryFn: () =>
+      fetchRecruitments({
+        techStacks: stackName ? stackName : [],
+        positions: positionName ? positionName : [],
+        progressMethods: progressMethodsName ? progressMethodsName : "",
+        search: searchWords ? searchWords : "",
+      }),
+    // enabled: stackName.length > 0, // 선택된 기술 스택이 있을 때만 쿼리 실행
   });
+
+  const handleStackChange = (newStacks: string[]) => {
+    console.log("newStacks:", newStacks);
+    setStackName(newStacks);
+  };
+  const handlePositionChange = (newPositions: string[]) => {
+    console.log("newPositions:", newPositions);
+    setPositionName(newPositions);
+  };
+  const handleProgressMethodChange = (newProgressMethods: string) => {
+    console.log("newProgressMethods:", newProgressMethods);
+    setProgressMethodsName(newProgressMethods);
+  };
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(event.target.value);
+  };
+
+  const handleSearch = () => {
+    setSearchWords(searchInput);
+  };
+
+  React.useEffect(() => {
+    refetch();
+  }, [stackName, positionName, progressMethodsName, searchWords, refetch]);
 
   // <=========== Start Cards Filter ===========>
   const filteredData = useMemo(() => {
@@ -61,9 +98,9 @@ const RecruitmentsPage = () => {
   };
   // <=========== End Cards Filter ===========>
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>An error occurred: {(error as Error).message}</div>;
-  if (!data || !Array.isArray(data)) return <div>No data available</div>;
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>An error occurred: {(error as Error).message}</div>;
+  // if (!data || !Array.isArray(data)) return <div>No data available</div>;
 
   return (
     <Stack
@@ -121,13 +158,23 @@ const RecruitmentsPage = () => {
       <Stack sx={{ flexGrow: 1, mb: "34px" }}>
         <Grid container spacing={2} columns={16}>
           <Grid item xs={3}>
-            <TechMultipleSelectChip label="記述スタック" />
+            <TechMultipleSelectChip
+              label="記述スタック"
+              onStackChange={handleStackChange}
+            />
           </Grid>
           <Grid item xs={3.5}>
-            <PositionMultipleSelectChip label="ポジション" />
+            <PositionMultipleSelectChip
+              label="ポジション"
+              onPositionChange={handlePositionChange}
+            />
           </Grid>
           <Grid item xs={3.5}>
-            <SelectOne label="進行方式" opts={opts} />
+            <SelectOne
+              label="進行方式"
+              opts={opts}
+              onProgressMethodChange={handleProgressMethodChange}
+            />
           </Grid>
           <Grid item xs={4}>
             <FormControl sx={{ width: "100%" }}>
@@ -135,6 +182,9 @@ const RecruitmentsPage = () => {
                 id="input-with-icon-adornment"
                 placeholder="検索"
                 size="small"
+                value={searchInput}
+                onChange={handleInputChange}
+                onBlur={handleSearch}
                 sx={{
                   height: "39px",
                   backgroundColor: topuColors.grey.lightGrey,
@@ -158,9 +208,16 @@ const RecruitmentsPage = () => {
           marginBottom: "30px",
         }}
       >
-        <Stack sx={{ width: "100%" }}>
-          <RecruitmentList data={paginatedData} error={null} />
-        </Stack>
+        {isLoading && <div>Loading...</div>}
+        {error && <div>An error occurred: {(error as Error).message}</div>}
+        {!data || !Array.isArray(data) ? (
+          <div>No data available</div>
+        ) : (
+          <Stack sx={{ width: "100%" }}>
+            <RecruitmentList data={paginatedData} error={null} />
+          </Stack>
+        )}
+
         <Pagination
           count={totalPages}
           page={page}

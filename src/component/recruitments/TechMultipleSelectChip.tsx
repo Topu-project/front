@@ -17,8 +17,6 @@ import {
 import { useRef, useState } from "react";
 import { AddCircle } from "@mui/icons-material";
 import CommonButton from "../elements/CommonButton";
-import { white } from "@/lib/colorConfig";
-import topuColors from "@/lib/colors";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -31,25 +29,24 @@ const MenuProps = {
   },
 };
 
-const names = [
+const frontStacks = [
   "JavaScript",
   "TypeScript",
   "React",
   "Vue",
   "Svelt",
   "Nextjs",
-  "Nodejs",
-  "Java",
-  "Spring",
-  "Go",
 ];
-const names2 = ["JavaScript", "TypeScript", "React", "Vue", "Svelt", "Nextjs"];
-const names3 = ["Nodejs", "Java", "Spring", "Go"];
+const backEndStacks = ["Nodejs", "Java", "Spring", "Go"];
 
-function getStyles(name: string, stackName: readonly string[], theme: Theme) {
+function getStyles(
+  name: string,
+  allStackName: readonly string[],
+  theme: Theme
+) {
   return {
     fontWeight:
-      stackName.indexOf(name) === -1
+      allStackName.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
@@ -104,22 +101,84 @@ interface StyledTabProps {
 
 type IProps = {
   label: string;
+  onStackChange: (stacks: string[]) => void;
 };
 
-export default function TechMultipleSelectChip({ label }: IProps) {
+export default function TechMultipleSelectChip({
+  label,
+  onStackChange,
+}: IProps) {
   const theme = useTheme();
-  const [stackName, setStackName] = React.useState<string[]>([]);
+  const [allStackName, setAllStackName] = React.useState<string[]>([]);
+  const [frontStackName, setFrontStackName] = React.useState<string[]>([]);
+  const [backStackName, setBackStackName] = React.useState<string[]>([]);
   const selectRef = useRef<HTMLDivElement>(null);
   const [menuWidth, setMenuWidth] = useState<number | undefined>(undefined);
   const [tabValue, setTabValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
 
-  const handleChange = (
+  const handleAllStackChange = (
     event: React.MouseEvent<HTMLLIElement>,
     value: string
   ) => {
     event.preventDefault();
-    setStackName((prev) => {
+    setAllStackName((prev) => {
+      if (prev.includes(value)) {
+        return prev.filter((item) => item !== value);
+      } else {
+        return [...prev, value];
+      }
+    });
+    if (frontStacks.includes(value)) {
+      setFrontStackName((prev) => {
+        if (prev.includes(value)) {
+          return prev.filter((item) => item !== value);
+        } else {
+          return [...prev, value];
+        }
+      });
+    } else if (backEndStacks.includes(value)) {
+      setBackStackName((prev) => {
+        if (prev.includes(value)) {
+          return prev.filter((item) => item !== value);
+        } else {
+          return [...prev, value];
+        }
+      });
+    }
+  };
+  const handleAllStackDelete =
+    (valueToDelete: string) => (event: React.MouseEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const newValue = allStackName.filter((name) => name !== valueToDelete);
+      setAllStackName(newValue);
+
+      if (frontStacks.includes(valueToDelete)) {
+        setFrontStackName((prev) =>
+          prev.filter((name) => name !== valueToDelete)
+        );
+      } else if (backEndStacks.includes(valueToDelete)) {
+        setBackStackName((prev) =>
+          prev.filter((name) => name !== valueToDelete)
+        );
+      }
+    };
+
+  const handleFrontStackChange = (
+    event: React.MouseEvent<HTMLLIElement>,
+    value: string
+  ) => {
+    event.preventDefault();
+    setFrontStackName((prev) => {
+      if (prev.includes(value)) {
+        return prev.filter((item) => item !== value);
+      } else {
+        return [...prev, value];
+      }
+    });
+    setAllStackName((prev) => {
       if (prev.includes(value)) {
         return prev.filter((item) => item !== value);
       } else {
@@ -127,19 +186,80 @@ export default function TechMultipleSelectChip({ label }: IProps) {
       }
     });
   };
-  const handleDelete = (valueToDelete: string) => (event: React.MouseEvent) => {
+  const handleFrontStackDelete =
+    (valueToDelete: string) => (event: React.MouseEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const newValue = frontStackName.filter((name) => name !== valueToDelete);
+
+      setFrontStackName(newValue);
+      setAllStackName((pre) =>
+        [...pre].filter((name) => name !== valueToDelete)
+      );
+    };
+
+  const handleBackStackChange = (
+    event: React.MouseEvent<HTMLLIElement>,
+    value: string
+  ) => {
     event.preventDefault();
-    event.stopPropagation();
-    const newValue = stackName.filter((name) => name !== valueToDelete);
-    setStackName(newValue);
+    setBackStackName((prev) => {
+      if (prev.includes(value)) {
+        return prev.filter((item) => item !== value);
+      } else {
+        return [...prev, value];
+      }
+    });
+    setAllStackName((prev) => {
+      if (prev.includes(value)) {
+        return prev.filter((item) => item !== value);
+      } else {
+        return [...prev, value];
+      }
+    });
   };
+  const handleBackStackDelete =
+    (valueToDelete: string) => (event: React.MouseEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const newValue = backStackName.filter((name) => name !== valueToDelete);
+
+      setBackStackName(newValue);
+      setAllStackName((pre) =>
+        [...pre].filter((name) => name !== valueToDelete)
+      );
+    };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 
+  // !======= Start 各タブの「全て初期化」処理
+  const handleAllStackReset = () => {
+    setFrontStackName([]);
+    setBackStackName([]);
+    setAllStackName([]);
+  };
+
+  const handleFrontStackReset = () => {
+    setFrontStackName([]);
+    setAllStackName((prev) =>
+      prev.filter((name) => !frontStacks.includes(name))
+    );
+  };
+
+  const handleBackStackReset = () => {
+    setBackStackName([]);
+    setAllStackName((prev) =>
+      prev.filter((name) => !backEndStacks.includes(name))
+    );
+  };
+  // !======= End 各タブの「全て初期化」処理
+
   const handleClose = () => {
     setOpen(false);
+    console.log("handleClose!!!");
+    onStackChange(allStackName);
   };
 
   const handleOpen = () => {
@@ -170,7 +290,7 @@ export default function TechMultipleSelectChip({ label }: IProps) {
         open={open}
         onClose={handleClose}
         onOpen={handleOpen}
-        value={stackName}
+        value={allStackName}
         input={<OutlinedInput id="select-multiple-chip" label={label} />}
         ref={selectRef}
         sx={{
@@ -186,8 +306,8 @@ export default function TechMultipleSelectChip({ label }: IProps) {
           },
         }}
         renderValue={(selected) => {
-          return stackName.length < 2 ? (
-            <Typography fontSize={"14px"}>{stackName[0]}</Typography>
+          return allStackName.length < 2 ? (
+            <Typography fontSize={"14px"}>{allStackName[0]}</Typography>
           ) : (
             <Stack
               sx={{
@@ -198,7 +318,7 @@ export default function TechMultipleSelectChip({ label }: IProps) {
                 gap: "3px",
               }}
             >
-              <Typography fontSize={"14px"}>{stackName[0]}</Typography>
+              <Typography fontSize={"14px"}>{allStackName[0]}</Typography>
               <Chip
                 icon={
                   <AddCircle
@@ -215,7 +335,7 @@ export default function TechMultipleSelectChip({ label }: IProps) {
                       mr: "-4px",
                     }}
                   >
-                    {stackName.length - 1}
+                    {allStackName.length - 1}
                   </Typography>
                 }
                 sx={{ p: "1px", height: "20px" }}
@@ -261,120 +381,192 @@ export default function TechMultipleSelectChip({ label }: IProps) {
             <AntTab label="バッグエンド" />
             {/* <AntTab label="Tab 3" /> */}
           </AntTabs>
-          <CommonButton
-            text={"検索"}
-            href=""
-            sx={{
-              backgroundColor: topuColors.pointColor.purpleMain,
-              color: white,
-              // border: `1px solid ${topuColors.pointColor.purpleMain}`,
-              fontSize: "14px",
-              width: "100%",
-              height: "24px",
-              borderRadius: 40,
-              ":hover": {
-                backgroundColor: "rgba(155, 39, 176, 0.6) !important",
-                boxShadow: "none !important",
-                border: `1px solid rgba(155, 39, 176, 0.6) !important`,
-              },
-              "&:active": {
-                backgroundColor: "rgba(0, 0, 0, 0) !important",
-                boxShadow: "none !important",
-                border: `1px solid rgba(155, 39, 176, 0.6) !important`,
-              },
-            }}
-          />
         </Box>
+        {"All tab select"}
         {tabValue === 0 && (
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, p: 1 }}>
-            {names.map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-                onClick={(event) => handleChange(event, name)}
-                style={getStyles(name, stackName, theme)}
-                sx={{
-                  bgcolor: stackName.includes(name)
-                    ? "action.selected"
-                    : "transparent",
-                  "&:hover": {
-                    bgcolor: "action.hover",
-                  },
-                  padding: "4px 8px", // 패딩 줄이기
-                  minHeight: "auto", // 최소 높이 제거
-                }}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Box>
-        )}
-        {tabValue === 2 && (
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, p: 1 }}>
-            {names3.map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-                onClick={(event) => handleChange(event, name)}
-                style={getStyles(name, stackName, theme)}
-                sx={{
-                  bgcolor: stackName.includes(name)
-                    ? "action.selected"
-                    : "transparent",
-                  "&:hover": {
-                    bgcolor: "action.hover",
-                  },
-                }}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Box>
-        )}
-        {tabValue === 1 && (
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, p: 1 }}>
-            {names2.map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-                onClick={(event) => handleChange(event, name)}
-                style={getStyles(name, stackName, theme)}
-                sx={{
-                  bgcolor: stackName.includes(name)
-                    ? "action.selected"
-                    : "transparent",
-                  "&:hover": {
-                    bgcolor: "action.hover",
-                  },
-                }}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Box>
-        )}
-        {/** chips area */}
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 0.5,
-            m: "10px",
-            mb: "4px",
-          }}
-        >
-          {stackName.map((name) => (
-            <Chip
-              key={name}
-              label={name}
-              onMouseDown={(event) => {
-                event.stopPropagation();
+          <Stack>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, p: 1 }}>
+              {frontStacks.concat(backEndStacks).map((name) => (
+                <MenuItem
+                  key={name}
+                  value={name}
+                  onClick={(event) => handleAllStackChange(event, name)}
+                  style={getStyles(name, allStackName, theme)}
+                  sx={{
+                    bgcolor: allStackName.includes(name)
+                      ? "action.selected"
+                      : "transparent",
+                    "&:hover": {
+                      bgcolor: "action.hover",
+                    },
+                    padding: "4px 8px", // 패딩 줄이기
+                    minHeight: "auto", // 최소 높이 제거
+                  }}
+                >
+                  {name}
+                </MenuItem>
+              ))}
+            </Box>
+            {/** chips area */}
+            <Stack
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                // gap: "20px",
+                paddingInline: "20px",
               }}
-              onDelete={handleDelete(name)}
-              sx={{ height: "20px", m: "2px" }}
-            />
-          ))}
-        </Box>
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                }}
+              >
+                {allStackName.map((name) => (
+                  <Chip
+                    key={name}
+                    label={name}
+                    onMouseDown={(event) => {
+                      event.stopPropagation();
+                    }}
+                    onDelete={handleAllStackDelete(name)}
+                    sx={{ height: "20px", m: "2px" }}
+                  />
+                ))}
+              </Box>
+              <CommonButton
+                sx={{ minWidth: "100px" }}
+                text={"全て初期化"}
+                variant="outlined"
+                onClick={handleAllStackReset}
+              />
+            </Stack>
+          </Stack>
+        )}
+        {"FrontEnd tab select"}
+        {tabValue === 1 && (
+          <Stack>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, p: 1 }}>
+              {frontStacks.map((name) => (
+                <MenuItem
+                  key={name}
+                  value={name}
+                  onClick={(event) => handleFrontStackChange(event, name)}
+                  style={getStyles(name, frontStackName, theme)}
+                  sx={{
+                    bgcolor: frontStackName.includes(name)
+                      ? "action.selected"
+                      : "transparent",
+                    "&:hover": {
+                      bgcolor: "action.hover",
+                    },
+                  }}
+                >
+                  {name}
+                </MenuItem>
+              ))}
+            </Box>
+            {/** chips area */}
+            <Stack
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                // gap: "20px",
+                paddingInline: "20px",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                }}
+              >
+                {frontStackName.map((name) => (
+                  <Chip
+                    key={name}
+                    label={name}
+                    onMouseDown={(event) => {
+                      event.stopPropagation();
+                    }}
+                    onDelete={handleFrontStackDelete(name)}
+                    sx={{ height: "20px", m: "2px" }}
+                  />
+                ))}
+              </Box>
+              <CommonButton
+                sx={{ minWidth: "100px" }}
+                text={"全て初期化"}
+                variant="outlined"
+                onClick={handleFrontStackReset}
+              />
+            </Stack>
+          </Stack>
+        )}
+        {"BackEnd tab select"}
+        {tabValue === 2 && (
+          <Stack>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, p: 1 }}>
+              {backEndStacks.map((name) => (
+                <MenuItem
+                  key={name}
+                  value={name}
+                  onClick={(event) => handleBackStackChange(event, name)}
+                  style={getStyles(name, backStackName, theme)}
+                  sx={{
+                    bgcolor: backStackName.includes(name)
+                      ? "action.selected"
+                      : "transparent",
+                    "&:hover": {
+                      bgcolor: "action.hover",
+                    },
+                  }}
+                >
+                  {name}
+                </MenuItem>
+              ))}
+            </Box>
+            {/** chips area */}
+            <Stack
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                // gap: "20px",
+                paddingInline: "20px",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                }}
+              >
+                {backStackName.map((name) => (
+                  <Chip
+                    key={name}
+                    label={name}
+                    onMouseDown={(event) => {
+                      event.stopPropagation();
+                    }}
+                    onDelete={handleBackStackDelete(name)}
+                    sx={{ height: "20px", m: "2px" }}
+                  />
+                ))}
+              </Box>
+              <CommonButton
+                sx={{ minWidth: "100px" }}
+                text={"全て初期化"}
+                variant="outlined"
+                onClick={handleBackStackReset}
+              />
+            </Stack>
+          </Stack>
+        )}
       </Select>
     </FormControl>
   );

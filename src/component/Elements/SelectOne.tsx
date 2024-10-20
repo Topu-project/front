@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from "react";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
-function getStyles(name: string, personName: string[], theme: Theme) {
+function getStyles(name: string, personName: string, theme: Theme) {
   return {
     fontWeight:
       personName.indexOf(name) === -1
@@ -23,11 +23,16 @@ function getStyles(name: string, personName: string[], theme: Theme) {
 type IProps = {
   label: string;
   opts: string[];
+  onProgressMethodChange: (method: string) => void;
 };
 
-export default function SelectOne({ label, opts }: IProps) {
+export default function SelectOne({
+  label,
+  opts,
+  onProgressMethodChange,
+}: IProps) {
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  const [personName, setPersonName] = React.useState<string>("");
   const selectRef = useRef<HTMLDivElement>(null);
   const [menuWidth, setMenuWidth] = useState<number | undefined>(undefined);
 
@@ -37,7 +42,7 @@ export default function SelectOne({ label, opts }: IProps) {
     } = event;
     setPersonName(
       // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
+      value
     );
   };
 
@@ -45,7 +50,8 @@ export default function SelectOne({ label, opts }: IProps) {
     if (selectRef.current) {
       setMenuWidth(selectRef.current.offsetWidth);
     }
-  }, []);
+    onProgressMethodChange(personName);
+  }, [personName]);
 
   return (
     <div>

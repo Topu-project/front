@@ -44,14 +44,17 @@ async function fetchRequest<T, R>(
     credentials: credentials === true ? "include" : undefined,
     body: body ? JSON.stringify(body) : undefined, // body가 있으면 직렬화
   });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    handleError(response);
+  const text = await response.text();
+  if (!text) {
+    return null as R;
   }
 
-  return data;
+  try {
+    return JSON.parse(text) as R;
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    throw new Error("Invalid JSON response");
+  }
 }
 
 /**
