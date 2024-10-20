@@ -44,6 +44,11 @@ const createUser = async (userData: FormData) => {
       },
       credentials: true,
     });
+    console.log("response", response);
+    // 응답 본문이 비어있는 경우를 처리
+    if (!response || Object.keys(response).length === 0) {
+      return { message: "User created successfully" };
+    }
     return response;
   } catch (error) {
     console.error("Server error details:", error);
