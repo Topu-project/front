@@ -17,8 +17,6 @@ import {
 import { useRef, useState } from "react";
 import { AddCircle } from "@mui/icons-material";
 import CommonButton from "../elements/CommonButton";
-import { white } from "@/lib/colorConfig";
-import topuColors from "@/lib/colors";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -103,9 +101,13 @@ interface StyledTabProps {
 
 type IProps = {
   label: string;
+  onStackChange: (stacks: string[]) => void;
 };
 
-export default function TechMultipleSelectChip({ label }: IProps) {
+export default function TechMultipleSelectChip({
+  label,
+  onStackChange,
+}: IProps) {
   const theme = useTheme();
   const [allStackName, setAllStackName] = React.useState<string[]>([]);
   const [frontStackName, setFrontStackName] = React.useState<string[]>([]);
@@ -257,6 +259,7 @@ export default function TechMultipleSelectChip({ label }: IProps) {
   const handleClose = () => {
     setOpen(false);
     console.log("handleClose!!!");
+    onStackChange(allStackName);
   };
 
   const handleOpen = () => {
@@ -378,29 +381,6 @@ export default function TechMultipleSelectChip({ label }: IProps) {
             <AntTab label="バッグエンド" />
             {/* <AntTab label="Tab 3" /> */}
           </AntTabs>
-          {/* <CommonButton
-            text={"検索"}
-            href=""
-            sx={{
-              backgroundColor: topuColors.pointColor.purpleMain,
-              color: white,
-              // border: `1px solid ${topuColors.pointColor.purpleMain}`,
-              fontSize: "14px",
-              width: "100%",
-              height: "24px",
-              borderRadius: 40,
-              ":hover": {
-                backgroundColor: "rgba(155, 39, 176, 0.6) !important",
-                boxShadow: "none !important",
-                border: `1px solid rgba(155, 39, 176, 0.6) !important`,
-              },
-              "&:active": {
-                backgroundColor: "rgba(0, 0, 0, 0) !important",
-                boxShadow: "none !important",
-                border: `1px solid rgba(155, 39, 176, 0.6) !important`,
-              },
-            }}
-          /> */}
         </Box>
         {"All tab select"}
         {tabValue === 0 && (

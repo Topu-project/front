@@ -91,11 +91,15 @@ interface StyledTabProps {
 
 type IProps = {
   label: string;
+  onPositionChange: (positions: string[]) => void;
 };
 
-export default function PositionMultipleSelectChip({ label }: IProps) {
+export default function PositionMultipleSelectChip({
+  label,
+  onPositionChange,
+}: IProps) {
   const theme = useTheme();
-  const [position, setStackName] = React.useState<string[]>([]);
+  const [position, setPositionName] = React.useState<string[]>([]);
   const selectRef = useRef<HTMLDivElement>(null);
   const [menuWidth, setMenuWidth] = useState<number | undefined>(undefined);
   const [tabValue, setTabValue] = React.useState(0);
@@ -106,7 +110,7 @@ export default function PositionMultipleSelectChip({ label }: IProps) {
     value: string
   ) => {
     event.preventDefault();
-    setStackName((prev) => {
+    setPositionName((prev) => {
       if (prev.includes(value)) {
         return prev.filter((item) => item !== value);
       } else {
@@ -118,7 +122,7 @@ export default function PositionMultipleSelectChip({ label }: IProps) {
     event.preventDefault();
     event.stopPropagation();
     const newValue = position.filter((name) => name !== valueToDelete);
-    setStackName(newValue);
+    setPositionName(newValue);
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -127,6 +131,7 @@ export default function PositionMultipleSelectChip({ label }: IProps) {
 
   const handleClose = () => {
     setOpen(false);
+    onPositionChange(position);
   };
 
   const handleOpen = () => {
