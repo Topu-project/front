@@ -5,10 +5,11 @@ import { Box, Typography, Chip, Avatar, Divider, Grid } from "@mui/material";
 import { notFound } from "next/navigation";
 import CommonButton from "@/component/elements/CommonButton";
 import topuColors from "@/lib/colors";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { get } from "@/service/requestService";
 import { Recruitment } from "@/lib/recruitments/types";
 import { opts } from "@/app/recruitments/page";
+import BundledEditor from "../BundleEditor";
 
 export const recruitmentCategoryMap: { [key: string]: string } = {
   ONLINE: opts[0],
@@ -51,31 +52,27 @@ const formatDateToJapanese = (dateString: string): string => {
 
 export default function RecruitmentPage({ params: { slug } }: Props) {
   const isSelfAccount = true; // TODO: userInfo.isSelfAccount
-  const product = getProduct(slug);
-
+  const [content, setContent] = useState(false);
   const [recruitmentData, setRecruitmentData] = useState({} as Recruitment);
-  if (!product) {
-    notFound();
-  }
+  const [editorContent, setEditorContent] = useState<string>("");
 
   useEffect(() => {
     const hasSession = document.cookie.includes("SESSION=");
     (async () => {
-      const recruitmentFetch = {
-        url: "/recruitments/1",
-        token: "your_token",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
       const recruitmentData = await get<Recruitment>({
         url: `recruitments/${slug}`,
       });
       setRecruitmentData(recruitmentData);
+      setEditorContent(recruitmentData.content); // 초기 값 설정
+      console.log("recruitmentData: " + JSON.stringify(recruitmentData));
     })();
   }, [slug]);
 
-  // 서버 파일에 있는 데이터중 해당 제품의 정보를 찾아서 그걸 보여줌
+  const handleEditorSave = (newContent: boolean) => {
+    // console.log("#KJH :", newContent);
+    setContent(newContent); // 수정된 내용을 반영
+  };
+
   return (
     <>
       {/* タイトル Area */}
@@ -212,8 +209,8 @@ export default function RecruitmentPage({ params: { slug } }: Props) {
                 label: "募集区分",
                 value:
                   recruitmentCategoriesMap[
-                    recruitmentData.recruitmentCategories
-                  ] || recruitmentData.recruitmentCategories,
+                    recruitmentData.recruitmentCategory
+                  ] || recruitmentData.recruitmentCategory,
               },
               {
                 label: "連絡方法",
@@ -350,6 +347,7 @@ export default function RecruitmentPage({ params: { slug } }: Props) {
                       borderRadius: 40,
                       mr: 1,
                     }}
+                    onClick={() => setContent(!content)}
                   />
                   <CommonButton
                     text={"削除"}
@@ -365,9 +363,24 @@ export default function RecruitmentPage({ params: { slug } }: Props) {
                 </Box>
               )}
             </Box>
-            <Typography variant="body2" paragraph>
-              {recruitmentData.content}
-            </Typography>
+            {!content ? (
+              <Grid container spacing={1}>
+                <Grid item xs={12}>
+                  <Typography variant="body2">
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: editorContent,
+                      }}
+                    />
+                  </Typography>
+                </Grid>
+              </Grid>
+            ) : (
+              <BundledEditor
+                initialValue={editorContent}
+                setContent={handleEditorSave}
+              />
+            )}
           </Grid>
 
           <Divider sx={{ my: 3 }} />

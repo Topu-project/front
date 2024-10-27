@@ -3,7 +3,6 @@
 import React, { useMemo, useState } from "react";
 import RecruitmentList from "@/component/recruitments/RecruitmentList";
 import { fetchRecruitments } from "@/lib/recruitments/api";
-import { Recruitment } from "@/lib/recruitments/types";
 import {
   Button,
   ButtonGroup,
@@ -36,7 +35,12 @@ const RecruitmentsPage = () => {
     React.useState<string>();
   const [searchInput, setSearchInput] = useState<string>("");
   const [searchWords, setSearchWords] = useState<string>("");
-  const { data, isLoading, error, refetch } = useQuery<Recruitment[]>({
+  const {
+    data: response,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery<RecruitmentResponse>({
     queryKey: ["recruitments", stackName],
     queryFn: () =>
       fetchRecruitments({
@@ -74,10 +78,12 @@ const RecruitmentsPage = () => {
 
   // <=========== Start Cards Filter ===========>
   const filteredData = useMemo(() => {
-    if (!data || !Array.isArray(data)) return [];
-    if (activeTab === "ALL") return data;
-    return data.filter((item) => item.recruitmentCategories === activeTab);
-  }, [data, activeTab]);
+    if (!response?.data || !Array.isArray(response.data)) return [];
+    if (activeTab === "ALL") return response.data;
+    return response.data.filter(
+      (item) => item.recruitmentCategory === activeTab
+    );
+  }, [response?.data, activeTab]);
 
   const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
   const paginatedData = filteredData.slice(
@@ -97,10 +103,6 @@ const RecruitmentsPage = () => {
     setPage(1); // Reset to first page when changing tabs
   };
   // <=========== End Cards Filter ===========>
-
-  // if (isLoading) return <div>Loading...</div>;
-  // if (error) return <div>An error occurred: {(error as Error).message}</div>;
-  // if (!data || !Array.isArray(data)) return <div>No data available</div>;
 
   return (
     <Stack
@@ -210,7 +212,7 @@ const RecruitmentsPage = () => {
       >
         {isLoading && <div>Loading...</div>}
         {error && <div>An error occurred: {(error as Error).message}</div>}
-        {!data || !Array.isArray(data) ? (
+        {!response?.data ? (
           <div>No data available</div>
         ) : (
           <Stack sx={{ width: "100%" }}>

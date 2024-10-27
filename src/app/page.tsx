@@ -1,9 +1,14 @@
+"use client";
+
 import * as React from "react";
 import { Stack } from "@mui/material";
 
 import RecruitmentsPage from "./recruitments/page";
+// import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export default function Home() {
+  // const queryClient = new QueryClient();
+
   return (
     <>
       <Stack
@@ -25,8 +30,9 @@ export default function Home() {
             background: "#d9d9d9",
           }}
         />
-
+        {/* <QueryClientProvider client={queryClient}> */}
         <RecruitmentsPage />
+        {/* </QueryClientProvider> */}
       </Stack>
     </>
   );
