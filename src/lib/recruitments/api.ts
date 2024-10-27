@@ -1,4 +1,3 @@
-import { Recruitment } from "@/lib/recruitments/types";
 import { get } from "@/service/requestService";
 
 export const fetchRecruitments = async (
@@ -23,7 +22,7 @@ export const fetchRecruitments = async (
     searchParams.append("search", params.search);
   }
 
-  return await get<Recruitment[]>({
+  return await get<RecruitmentResponse>({
     url: `/recruitments/query?${searchParams.toString()}`,
   });
 };
