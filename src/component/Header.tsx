@@ -2,31 +2,21 @@
 import { white } from "@/lib/colorConfig";
 import topuColors from "@/lib/colors";
 import { Typography, Stack } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import CommonButton from "./elements/CommonButton";
-import { useQuery } from "@tanstack/react-query";
 import { get } from "@/service/requestService";
-import { fetchUserData } from "@/lib/userData/api";
-import { UserData } from "@/lib/userData/types";
-import { useRouter } from "next/navigation";
+import { isAuthenticatedAtom, userAtom } from "@/atoms/userAtom";
+import { useAtom, useAtomValue } from "jotai";
 
 export default function Header() {
-  const router = useRouter();
-  const {
-    data: userData,
-    isLoading: isUserDataLoading,
-    error: userDataError,
-  } = useQuery<UserData>({
-    queryKey: ["userData"],
-    queryFn: fetchUserData,
-  });
+  const [user, setUser] = useAtom(userAtom);
+  const isAuthenticated = useAtomValue(isAuthenticatedAtom);
+  console.log("user?", user);
 
-  console.log("userData", userData);
-  useEffect(() => {
-    if (userData && userData.firstLogin === true) {
-      router.push("/signup");
-    }
-  }, [userData]);
+  const handleLogout = async () => {
+    setUser(null); // 로컬 상태 초기화
+  };
+
   return (
     <>
       <Stack
@@ -110,15 +100,15 @@ export default function Header() {
             marginLeft: "10px",
           }}
         />
-        {userData ? (
+        {isAuthenticated ? (
           <Stack>
             <CommonButton
               text={"ログアウト"}
-              onClick={async () => {
-                await get({
-                  url: `/logout`,
-                });
-              }}
+              onClick={handleLogout} // onClick={async () => {
+              //   await get({
+              //     url: `/logout`,
+              //   });
+              // }}
               size="large"
               sx={{
                 backgroundColor: "rgba(0, 0, 0, 0) !important",
