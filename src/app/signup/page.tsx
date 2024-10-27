@@ -1,19 +1,25 @@
 "use client";
 
+import { userAtom } from "@/atoms/userAtom";
 import topuColors from "@/lib/colors";
+import { fetchUserData } from "@/lib/userData/api";
+import { UserData } from "@/lib/userData/types";
 import { post } from "@/service/requestService";
 import {
+  Alert,
   Autocomplete,
   Box,
   Button,
   FormControl,
+  Snackbar,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useAtom, useSetAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 interface FormData {
@@ -45,6 +51,10 @@ const createUser = async (userData: FormData) => {
       credentials: true,
     });
     console.log("response", response);
+    // errorMessage가 있는 경우 reject하여 onError로 전달
+    if (response?.errorMessage) {
+      return Promise.reject(new Error(response.errorMessage));
+    }
     // 응답 본문이 비어있는 경우를 처리
     if (!response || Object.keys(response).length === 0) {
       return { message: "User created successfully" };
@@ -57,7 +67,26 @@ const createUser = async (userData: FormData) => {
 };
 
 export default function SignUp() {
+  const setUser = useSetAtom(userAtom);
   const router = useRouter();
+
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "error" as "error" | "success",
+  });
+
+  const handleCloseSnackbar = () => {
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  };
+
+  const { data: userData, refetch: refetchUserData } = useQuery<UserData>({
+    queryKey: ["userData"],
+    queryFn: fetchUserData,
+    // 초기에는 자동으로 실행되지 않도록 설정
+    enabled: false,
+  });
+
   const {
     control,
     handleSubmit,
@@ -74,16 +103,24 @@ export default function SignUp() {
   // useMutation 훅 사용
   const mutation = useMutation({
     mutationFn: createUser,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       console.log("사용자 생성 성공:", data);
-      router.push("/");
+      // useQuery 대신 refetch 사용
+      const { data: newUserData } = await refetchUserData();
+
+      if (newUserData) {
+        setUser(newUserData);
+        router.push("/");
+      }
     },
     onError: (error: any) => {
       console.error("사용자 생성 실패:", error);
-      // 사용자에게 에러 메시지 표시
-      alert(
-        `회원가입 중 오류가 발생했습니다: ${error.message || "알 수 없는 오류"}`
-      );
+      // Snackbar로 에러 메시지 표시
+      setSnackbar({
+        open: true,
+        message: error.message || "회원가입 중 오류가 발생했습니다",
+        severity: "error",
+      });
     },
   });
 
@@ -230,6 +267,21 @@ export default function SignUp() {
           >
             登録
           </Button>
+          <Snackbar
+            open={snackbar.open}
+            autoHideDuration={6000}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          >
+            <Alert
+              onClose={handleCloseSnackbar}
+              severity={snackbar.severity}
+              variant="filled"
+              sx={{ width: "100%" }}
+            >
+              {snackbar.message}
+            </Alert>
+          </Snackbar>
         </Box>
       </Stack>
     </React.Fragment>
